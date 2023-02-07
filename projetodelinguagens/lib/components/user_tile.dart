@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projetodelinguagens/models/user.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/users.dart';
+import '../routes/app_routes.dart';
 
 class UserTile extends StatelessWidget {
   final User user;
@@ -20,11 +24,45 @@ class UserTile extends StatelessWidget {
         child: Row(children: <Widget>[
           IconButton(
             icon: Icon(Icons.edit),
-            onPressed: () {},
+            color: Colors.orange,
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                AppRoutes.USER_FORM,
+                arguments: user,
+              );
+            },
           ),
           IconButton(
             icon: Icon(Icons.delete),
-            onPressed: () {},
+            color: Colors.red,
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text('Excluir usuário'),
+                  content: Text('Tem certeza?'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text("Não"),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    TextButton(
+                      child: Text("Sim"),
+                      onPressed: () {
+                        //Provider.of<Users>(context, listen: false).remove(user);
+                        Navigator.of(context).pop(true);
+                      },
+                    ),
+                  ],
+                ),
+              ).then((confirmed) {
+                if (confirmed) {
+                  Provider.of<Users>(context).remove(user);
+                }
+              });
+            },
           ),
         ]),
       ),
