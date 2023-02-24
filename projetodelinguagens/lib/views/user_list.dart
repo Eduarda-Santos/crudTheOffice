@@ -19,14 +19,15 @@ class UserList extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
+              //users.remove(users.byIndex(0));
               Navigator.of(context).pushNamed(AppRoutes.USER_FORM);
             },
           ),
         ],
       ),
       body: ListView.builder(
-        itemBuilder: (ctx, i) => UserTile(users.byIndex(i)),
         itemCount: users.count,
+        itemBuilder: (ctx, i) => UserTile(users.byIndex(i)),
       ),
     );
   }
